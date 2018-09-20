@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/var/www/html/leki_2018_2/public/funkcje.js</file>
+            <file>file:/var/www/html/leki_2018_2/.env</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/zaloguj.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/routes/web.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/leki.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/public/style.css</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/test.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/app/Http/Controllers/Controller_ajax.php</file>
+            <file>file:/var/www/html/leki_2018_2/app/Http/Controllers/Controller.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/ajax_blad.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/layout/index.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/ajax_pokaz_opis.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/app/Http/Controllers/wpolsne.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/ajax_sukces.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/glowna.blade.php</file>
+        </group>
+    </open-files>
+</project-private>
