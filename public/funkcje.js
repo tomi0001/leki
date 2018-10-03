@@ -46,12 +46,23 @@ function oblicz_srednia(url,id,i) {
   //var dawka = $("#dawka").val();
   //var data = $("#data").val();
   //var nazwa = $("#nazwa").val();
-  //$("#srednia" + i).hide();
-   $("#srednia" + i).load(url + "/" + id);  
-    
+   //$("#srednia" + i).toogle();
+   //if ($("#srednia" + i).is(":visible")  ){
+        $("#srednia" + i).load(url + "/" + id);  
+        $("#srednia" + i).toggle();  
+   //}
+   //else {
+     //  $("#srednia" + i).hide();
+   //} 
     
     
 }
+
+function ukryj_pola_tekstowe() {
+    
+    
+}
+
 
 function dodaj_lek(url) {
 //   alert("dobrze");
@@ -96,6 +107,34 @@ function edytuj_opis(url,id,i) {
  $("#edit_post_"+i).load(url + "?id=" + id);
  
 }
+function usun_wpis(url,i,id) {
+     var bool = confirm("Czy na pewno usunąć");
+     if (bool == true) {
+        $("#lek"+i).load(url + "/" + id);
+        //$("#lek"+i).hide(700);
+     }
+     //else alert("zle");
+    
+    
+    
+}
+
+function modyfikuj_grupe(url) {
+    //alert(nazwa);
+    if ($("#grupy").val() == "") alert("wybierz grupę");
+    else {
+        $("#modyfikuj_grupa").show();
+        
+        $("#modyfikuj_grupa").load(url + "?" + "id_grupy=" + $("#grupy").val());  
+        //$("#modyfikuj_grupa").text(url);
+    }   
+ 
+    
+}
+function przelicz(url,rownowaznik) {
+    $("#rownowaznik2").load(url + "?id=" + $("#rownowaznik").val() + "&rownowaznik=" + rownowaznik);
+    
+}
 
 function ukryj_divy(count) {
   
@@ -104,14 +143,98 @@ function ukryj_divy(count) {
     $("#pokaz_opis__"+i).hide();
     $("#edit_post_"+i).hide();
     $("#dodaj_opis_"+i).hide();
+    $("#srednia"+i).hide();
     //$("#pokaz_opis_"+i).hide();
   }
   
 }
-function ukryj_divy2() {
-  $("#czy_jest2").hide();
-  $("#czy_jest3").hide();
+
+function modyfikuj_substancje(url) {
+    if ($("#substancje").val() == "") alert("wybierz substancję");
+    else {
+        $("#modyfikuj_sub").show();
+        $("#modyfikuj_sub").load(url + "?" + "id_sub=" + $("#substancje").val());       
+    }
 }
+
+function modyfikuj_produkty(url) {
+    if ($("#produkty").val() == "") alert("wybierz produkt");
+    else {
+        $("#modyfikuj_pro").show();
+        $("#modyfikuj_pro").load(url + "?" + "id_pro=" + $("#produkty").val());
+    }
+}
+
+
+function modyfikuj_substancje2(url) {
+    //$("#modyfikuj_sub").show();
+    //alert(url + "?" + "id_sub=" + $("#substancje").val());
+   // $("#modyfikuj_sub2").load(url + "?" + "id_sub=" + $("#substancje").val());
+   //var tablica = dd($("#substancje2").val());
+    //alert(tablica);
+    
+}
+
+function ukryj_divy3() {
+    
+    $("#modyfikuj_grupa").hide();
+    $("#modyfikuj_sub").hide();
+    
+    
+}
+function ukryj_divy2() {
+    //alert("dowb");
+  //$('#gru').disabled(true);
+   //gru.disabled = false;
+   //if ($("#gru") == "" and $("#pro") == "" and $("#sub") == "") {
+   //$("#gru").prop('disabled', true);
+     //  }
+   if ($("#gru") != "") {
+       //$("#sub").prop('disabled', true);
+       //$("#pro").prop('disabled', true);
+    }
+  
+}
+
+$('#pro').on('keydown', function () {
+    if ($('#pro').val() != "") {
+        $("#sub").prop('disabled', true);
+        //alert($('#pro').val());
+        $("#gru").prop('disabled', true);
+        //$("#sub").prop('disabled', true);
+        
+    }
+    else {
+        $("#sub").prop('disabled', false);
+        $("#gru").prop('disabled', false);
+    }
+});
+$('#sub').on('keydown', function () {
+    if ($('#sub').val() != "") {
+        $("#pro").prop('disabled', true);
+        //alert($('#pro').val());
+        $("#gru").prop('disabled', true);
+        //$("#sub").prop('disabled', true);
+        
+    }
+    else {
+        $("#pro").prop('disabled', false);
+        $("#gru").prop('disabled', false);
+    }
+});
+$('#gru').on('keydown', function () {
+    if ($('#gru').val() != "") {
+        $("#sub").prop('disabled', true);
+        //alert($('#pro').val());
+        $("#pro").prop('disabled', true);
+        //$("#sub").prop('disabled', true);
+        
+    }
+    else {
+        $("#sub").prop('disabled', false);
+        $("#pro").prop('disabled', false);
+    }
+});
 
 $("#opis").change(function(){
   

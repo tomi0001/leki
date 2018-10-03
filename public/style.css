@@ -5,7 +5,32 @@ body {
   
 }
 @media (min-width: 1025px) {
-    
+    .lek3 {
+    width: 100%;
+    background-color: #99DA33;
+    border-radius: 35px 15px;
+    color: white;
+}
+.lek2 {
+    width: 70%;
+    background-color: #99DA33;
+    border-radius: 35px 15px;
+}
+.lek23 {
+    width: 70%;
+    background-color: #1f2842;
+    border-radius: 35px 15px;
+}
+.lek24 {
+    width: 70%;
+    background-color: #7e1e1e;
+    border-radius: 35px 15px;
+}
+.lek25 {
+    width: 70%;
+    background-color: #69116f;
+    border-radius: 35px 15px;
+}
     #center {
 
 width: 1330px;
@@ -100,8 +125,32 @@ float: left;
 
 @media  (min-width: 800px) and (max-width: 1025px) {
     /* STYLES HERE */
-
-
+.lek2 {
+    width: 70%;
+    background-color: #99DA33;
+    border-radius: 35px 15px;
+}
+.lek23 {
+    width: 70%;
+    background-color: #1f2842;
+    border-radius: 35px 15px;
+}
+.lek24 {
+    width: 70%;
+    background-color: #7e1e1e;
+    border-radius: 35px 15px;
+}
+.lek25 {
+    width: 70%;
+    background-color: #69116f;
+    border-radius: 35px 15px;
+}
+.lek3 {
+    width: 100%;
+    background-color: #99DA33;
+    border-radius: 35px 15px;
+    color: white;
+}
 #center {
 
 width: 1000px;
@@ -192,8 +241,32 @@ float: left;
 
 @media  (max-width: 800px) {
     /* STYLES HERE */
-
-
+.lek2 {
+    width: 90%;
+    background-color: #99DA33;
+    border-radius: 35px 15px;
+}
+.lek23 {
+    width: 90%;
+    background-color: #1f2842;
+    border-radius: 35px 15px;
+}
+.lek24 {
+    width: 90%;
+    background-color: #7e1e1e;
+    border-radius: 35px 15px;
+}
+.lek25 {
+    width: 90%;
+    background-color: #69116f;
+    border-radius: 35px 15px;
+}
+.lek3 {
+    width: 150%;
+    background-color: #99DA33;
+    border-radius: 35px 15px;
+    color: white;
+}
 #center {
 
 width: 10px;
@@ -589,32 +662,8 @@ margin-right: auto;
      margin-bottom: 4px;
   
 }
-.lek2 {
-    width: 70%;
-    background-color: #99DA33;
-    border-radius: 35px 15px;
-}
-.lek23 {
-    width: 70%;
-    background-color: #1f2842;
-    border-radius: 35px 15px;
-}
-.lek24 {
-    width: 70%;
-    background-color: #7e1e1e;
-    border-radius: 35px 15px;
-}
-.lek25 {
-    width: 70%;
-    background-color: #69116f;
-    border-radius: 35px 15px;
-}
-.lek3 {
-    width: 100%;
-    background-color: #99DA33;
-    border-radius: 35px 15px;
-    color: white;
-}
+
+
 .opis_poka {
     width: 70%;
     background-color: #3D8737;
@@ -720,11 +769,13 @@ a.kalendarz:hover {color: gray; font-size: 18px;}
 a.kalendarz2 {color: white; font-size: 17px;}
 a.kalendarz2:hover {color: gray; font-size: 18px;}
 span.normalna2 { color: white; font-size: 17px;}
+span.normalna3 { color: white; font-size: 14px;}
 span.wieksza{ color: #e1e31a; font-size: 19px;}
 span.pogrubiona {color:white;font-size: 21px;}
 span.blad {color:#FF0000;font-size: 16px;}
 span.succes {color:#c4b90c;font-size: 21px;}
 span.succes2 {color:#E3DA36;font-size: 16px;}
+span.succes3 {color:white;font-size: 18px;}
 span.psycho {color:white;font-size: 16px;}
 span.pouczenie {color:white;font-size: 13px;}
 a.przycisk {color: #EBD323; font-size: 19px;}

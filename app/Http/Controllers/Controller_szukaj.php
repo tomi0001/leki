@@ -74,28 +74,15 @@ class Controller_szukaj extends BaseController
          $text = "";
           if (Auth::check()) {
               $this->strona = Input::get("strona");
-              /*
-              if (empty(Input::get("strona"))) {
-                  $strona = 1;
-              }
-              else {
-                  $strona = Input::get("strona");
-                  
-              }
-               * */
-               
+
                $link2 =   "&dawka_od=" . Input::get("dawka_od") . "&dawka_do=" . 
                             Input::get("dawka_do") . "&wedlug=" . Input::get("wedlug") . "&wszystkie=" . Input::get("wszystkie") . "&data_od=" . 
                             Input::get("data_od") . "&data_do=" . Input::get("data_do") . "&godzina_od=" . Input::get("godzins_od") . "&godzina_do=" . 
                             Input::get("godzina_do") . "&sortuj=" . Input::get("sortuj") . "&fraza=" . Input::get("fraza") . "&dzien=" . 
                             Input::get("dzien") .     "&dobowa=" . Input::get("dobowa") . "&strona=";
-            if (Input::get('produkt') == "" and Input::get('substancja') == "" and Input::get('grupa') == "") {
-                
-                
-                
+            if (Input::get('produkt') == "" and Input::get('substancja') == "" and Input::get('grupa') == "") {    
             }
             if (Input::get('produkt') != "") {
-                //Input::get('produkt') = str_replace(",","",Input::get('produkt'));
                 $fraza = explode(',',Input::get('produkt'));
                 $text = "";
                 
@@ -116,7 +103,6 @@ class Controller_szukaj extends BaseController
                 }
             }    
             elseif (Input::get('substancja') != "") {
-                print "kurna";
                 $fraza = explode(',',Input::get('substancja'));
                 $text = "";
                 for ($i=0;$i < count($fraza);$i++) {
@@ -161,14 +147,9 @@ class Controller_szukaj extends BaseController
             else {
                 $link = "wyszukaj2?produkt=" . $text . "&substancja=" . Input::get("substancja")  . "&zapytanie=" . Input::get('zapytanie') . "&grupa=" . $link2;
                 
-            }
-            
-            
-            
+            }    
                 $fraza2 = $wspolne->charset_utf_fix2(Input::get("fraza"));
                 $produkt = explode(",",$text);
-                //Input::get("dawka_od"),Input::get("dawka_do"),Input::get("wedlug"),Input::get("wszystkie"),Input::get("data_od"),
-                //Input::get("data_do"),Input::get("godzina_od"),Input::get("godzina_do"),Input::get("sortuj"),Input::get('dzien'),$fraza2,Input::get("strona"),$dobowa
                 $this->dawka_od = Input::get("dawka_od");
                 $this->dawka_do = Input::get("dawka_do");
                 $this->wedlug = Input::get("wedlug");
@@ -179,10 +160,7 @@ class Controller_szukaj extends BaseController
                 $this->godzina_do = Input::get("godzina_do");
                 $this->sortuj = Input::get("sortuj");
                 $this->dzien = Input::get('dzien');
-                //$this->fraza = $fraza2;
-                
-                //$this->dobowa = $dobowa;
-               
+
                 if ( !empty(Input::get('dobowa'))) $dobowa = "on";
                 else $dobowa  = "";
                 if(!isset($nazwa) and Input::get("fraza") != "") $wynik = $this->utworz_zapytanie($produkt,4,$fraza2,$dobowa);
@@ -397,10 +375,10 @@ class Controller_szukaj extends BaseController
             $this->where = " spozycie.id_users = '$id_users' ";
         }
         if ($this->dawka_od != "" or $this->dawka_do != "" or $this->data_od != "" or $this->data_do != "" or $this->godzina_od != "" or $this->godzina_do != "") {
-            if ($dobowa != "on" and ($this->dawka_od == "" or $this->dawka_od == "")) {
+            if ($dobowa != "on"and ($this->dawka_od != "" or $this->dawka_od != "")) {
                     if ($this->dawka_od != "") $this->where .= " and porcja >= '$this->dawka_od' ";
                     if ($this->dawka_do != "") $this->where .= " and porcja <= '$this->dawka_do' ";
-               }
+            }
             if ($this->data_od != "")  $this->where .= " and spozycie.data >= '$this->data_od' ";
             if ($this->data_do != "")  $this->where .= " and spozycie.data <= '$this->data_do' ";
             if ($this->godzina_od != "")  $this->where .= " and hour(spozycie.data) >= '$this->godzina_od' ";
@@ -477,12 +455,14 @@ class Controller_szukaj extends BaseController
             $this->group .= " , przekierowanie_opis.id_spozycia ";
             
         }
-       
+       $poczatek_dnia = $wspolne->ustal_poczatek_dnia(true);
         if ($this->sortuj == 1) $this->sortuj = " order by data_ DESC";
         if ($this->sortuj == 2) $this->sortuj = " order by porcja";
         if ($this->sortuj == 3) $this->sortuj = " order by id_produktu";
         if ($this->sortuj == 4) $this->sortuj = " order by hour(data_) ";
-        $zapytanie = DB::select("select $this->porcja,   ( DATE(IF(HOUR(spozycie.DATA) >= 5, spozycie.DATA,Date_add(spozycie.DATA, INTERVAL - 1 DAY) )) )  AS dat ,spozycie.data as data_,produkty.nazwa as nazwa,substancje.nazwa as nazwa_sub"
+
+        $zapytanie = DB::select("select $this->porcja,   ( DATE(IF(HOUR(spozycie.DATA) >= $poczatek_dnia, "
+                . "spozycie.DATA,Date_add(spozycie.DATA, INTERVAL - 1 DAY) )) )  AS dat ,spozycie.data as data_,produkty.nazwa as nazwa,substancje.nazwa as nazwa_sub"
                 . ",id_produktu,spozycie.cena as cena from spozycie join produkty on spozycie.id_produktu = produkty.id  "
                 . "left join substancje on produkty.id_substancji = substancje.id "
                 . " $this->join where $this->produkty $this->where $this->group $this->having $this->sortuj");
@@ -540,7 +520,7 @@ class Controller_szukaj extends BaseController
             foreach ($znajdz3 as $znajdz4) {
                 $wynik = $this->znajdz_podobienstwo_miedzy_dwoma_znakami($fraza,$znajdz4->nazwa);
                 if ($wynik > 0.5) {
-                    print "dobrze";
+                    //print "dobrze";
                     return [true,$znajdz4->nazwa];
                 }
                 $i++;
@@ -551,16 +531,14 @@ class Controller_szukaj extends BaseController
         
         
     }
-
-     
-           
+      
     private function oblicz_czas($data) {
                         $wspolne = new \App\Http\Controllers\wpolsne();
-                        $dat = $wspolne->ustal_poczatek_dnia(5);
+                        $dat = $wspolne->ustal_poczatek_dnia(true);
                         $data2 = explode(" ",$data);
                         $data3 = explode("-",$data2[0]);
                         $godzina = explode(":",$data2[1]);
-                        if ( $godzina[0] <= 5) {
+                        if ( $godzina[0] <= $dat) {
                             $czas = mktime( $godzina[0] , $godzina[1] , $godzina[2] , $data3[1] , $data3[2] , $data3[0]);
                             $czas -= (3600 * 24);
                             $data = date("Y-m-d H:i:s",$czas);
@@ -592,9 +570,11 @@ class Controller_szukaj extends BaseController
     
     private function wykonaj_zapytanie($produkty ,$dzien) {
         $wspolne = new \App\Http\Controllers\wpolsne();
+        $poczatek_dnia = $wspolne->ustal_poczatek_dnia(true);
         $tablica = array();
         $i = 0;
-        $zapytanie = DB::select("select $this->porcja,   ( DATE(IF(HOUR(spozycie.DATA) >= 5, spozycie.DATA,Date_add(spozycie.DATA, INTERVAL - 1 DAY) )) )  AS dat ,spozycie.data as data_,produkty.nazwa as nazwa,substancje.nazwa as nazwa_sub,id_produktu,"
+        $zapytanie = DB::select("select $this->porcja,   ( DATE(IF(HOUR(spozycie.DATA) >= $poczatek_dnia, spozycie.DATA,Date_add(spozycie.DATA, INTERVAL - 1 DAY) )) )  AS dat "
+                . ",spozycie.data as data_,produkty.nazwa as nazwa,substancje.nazwa as nazwa_sub,id_produktu,"
                 . "spozycie.id as id,spozycie.cena as cena"
                 . " from spozycie join produkty on spozycie.id_produktu = produkty.id  left join substancje on produkty.id_substancji = substancje.id "
                 . " $this->join where  $this->produkty $this->where $this->group $this->having $this->sortuj limit $this->limit");
@@ -621,6 +601,7 @@ class Controller_szukaj extends BaseController
                         $tablica[$i]["nazwa"] = $zapytanie4->nazwa;
                         $tablica[$i]["nazwa_sub"] = $wspolne->wybierz_nazwe_substancji($zapytanie4->id_produktu);
                         $tablica[$i]["cena"] = $wspolne->oblicz_cene($zapytanie4->cena);
+                        $tablica[$i]["rodzaj"] = $wspolne->zwroc_rodzaj($zapytanie4->id_produktu);
                         $i++;
                     }
                 }
@@ -628,7 +609,6 @@ class Controller_szukaj extends BaseController
                     $tablica[$i]["porcja"] = $zapytanie2->porcja;
                     $tablica[$i]["data"] = $zapytanie2->data_;
                     $tablica[$i]['color'] = $wspolne->zwroc_kolor_dla_grupy($zapytanie2->id_produktu);
-                    
                     $nowa_data = $this->oblicz_czas($tablica[$i]["data"]);
                     $tablica[$i]["rok"] = $nowa_data["rok"];
                     $tablica[$i]["miesiac"] = $nowa_data["miesiac"];
@@ -638,6 +618,7 @@ class Controller_szukaj extends BaseController
                     $tablica[$i]["nazwa_sub"] = $wspolne->wybierz_nazwe_substancji($zapytanie2->id_produktu);
                     $tablica[$i]["cena"] =$wspolne->oblicz_cene($zapytanie2->cena);
                     $tablica[$i]["przekierowanie"] = $wspolne->sprawdz_czy_jest_opis($zapytanie2->id);
+                    $tablica[$i]["rodzaj"] = $wspolne->zwroc_rodzaj($zapytanie2->id_produktu);
                     $i++;
                     
                 }
@@ -648,9 +629,11 @@ class Controller_szukaj extends BaseController
     }
     
     private function wskaz_ostatni_rekord($data,$id_produktu) {
+         $wspolne = new \App\Http\Controllers\wpolsne();
+        $poczatek_dnia = $wspolne->ustal_poczatek_dnia(true);
         $id_users = Auth::User()->id;
         $i = 0;
-        $rekord = DB::select("SELECT ( DATE(IF(HOUR(spozycie.DATA) >= 5, spozycie.DATA,Date_add(spozycie.DATA, INTERVAL - 1 DAY) )) )  "
+        $rekord = DB::select("SELECT ( DATE(IF(HOUR(spozycie.DATA) >= $poczatek_dnia, spozycie.DATA,Date_add(spozycie.DATA, INTERVAL - 1 DAY) )) )  "
                 . "AS dat, spozycie.id_users, SUM(spozycie.porcja) AS spozycie,data FROM   spozycie  where id_produktu = '$id_produktu' and data <= '$data'  and id_users = '$id_users' GROUP  BY dat ORDER  BY dat desc");
         $tablica = array();
         $j = 0;
@@ -667,7 +650,7 @@ class Controller_szukaj extends BaseController
                 $tablica[$j][2] = $data1[$i][0];
               
             }
-            elseif ($i != 0 and (($czas[$i-1]  - 176400) >  $czas[$i]))   {
+            elseif ($i != 0 and (($czas[$i-1]  - 146400) >  $czas[$i]))   {
                 $tablica[$j][2] = $data1[$i-1][0];               
                 $j++;               
                 break;

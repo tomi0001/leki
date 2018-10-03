@@ -25,7 +25,7 @@
 
             <span class="psycho">Data wzięcia {{$produkty[$i]['data']}}<br>
                 Wydałeś na to {{$produkty[$i]['cena']}}<br>
-                Dawka    {{$produkty[$i]['porcja']}}</span><br>
+                Dawka    {{$produkty[$i]['porcja']}}  {{$produkty[$i]['rodzaj']}}</span><br>
                 @if ($produkty[$i]["przekierowanie"] != "")
                 <button class="btn btn-success" onclick=pokaz_opis('{{ url('pokaz_opis')}}',{{$produkty[$i]['id']}},{{$i}})>Pokaz opis</button>
                 @else

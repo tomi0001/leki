@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 class wpolsne extends BaseController
 {
+    
+    public $suma_substancji;
+    public $rownowaznik;
+    public $rodzaj_rowno;
     public function sprawdz_czy_jest_opis($id) {
         
         $sprawdz = DB::select("select id_spozycia from przekierowanie_opis where id_spozycia = '$id'");
@@ -25,21 +29,31 @@ class wpolsne extends BaseController
     }
     
     public function zwroc_kolor_dla_grupy($id_produktu,$bool = false) {
+            $kolor3 = "";
             $id_substancji = DB::select("select id_substancji from przekierowanie_substancji where id_produktu = '$id_produktu'");
             foreach ($id_substancji as $id_substancji2) {
                 $id_grupy = DB::select("select id_grupy from przekierowanie_grup where id_substancji = '$id_substancji2->id_substancji'");
                 foreach ($id_grupy as $id_grupy2) {
                     $kolor = DB::select("select color from grupy where id = '$id_grupy2->id_grupy'");
                     foreach ($kolor as $kolor2) {
-                        //if ($kolor2->color == "") ;
-                        if ($bool == true) return $kolor2->color;
-                        else return "lek2" . $kolor2->color;                        
+
+                        if ($kolor2->color != "" ) {
+                            $kolor3 =  $kolor2->color;
+
+                        }
                     }
                     
                 }
             }
-          return "lek2";    
-    }    
+           
+                            if ($bool == false) $kolor3 = "lek2" . $kolor3;
+                            return $kolor3;
+
+            if ($bool == false) $kolor3 = "lek2" . $kolor3;
+            
+            return  $kolor3;    
+
+    }
     public function wybierz_kolor($id_users,$data1,$data2) {
         $dane_spozycie3 = array();
         $i = 0;
@@ -50,7 +64,7 @@ class wpolsne extends BaseController
         $dane_spozycie = DB::select("select porcja,data,id_produktu,cena,spozycie.id  as id2 from spozycie  "                  
                 . "where data >= '$data1' and data <= '$data2' and id_users = '$id_users' order by data");
         foreach($dane_spozycie as $dane_spozycie2) {
-
+            
             $dane_spozycie3[$i]["color"] = $this->zwroc_kolor_dla_grupy($dane_spozycie2->id_produktu,true);
             
             if ($dane_spozycie3[$i]["color"] == 3) $kolor  = 3;
@@ -92,11 +106,58 @@ class wpolsne extends BaseController
             $dane_spozycie3[$i]["nazwa_substancji"] = $tym[5];
             $dane_spozycie3[$i]["id"] = $dane_spozycie2->id2;
             $dane_spozycie3[$i]["color"] = $this->zwroc_kolor_dla_grupy($dane_spozycie2->id_produktu);
+            $dane_spozycie3[$i]["rodzaj"] = $this->zwroc_rodzaj($dane_spozycie2->id_produktu);
 
             $i++;
         }
         return $dane_spozycie3;
     }
+    
+    public function zwroc_rodzaj($id_produktu) {
+        $rodzaj = DB::select("select spozycie.id_produktu,produkty.rodzaj_porcji as rodzaj_porcji from spozycie join produkty on produkty.id = spozycie.id_produktu where spozycie.id_produktu = '$id_produktu'");
+        foreach ($rodzaj as $rodzaj2) {
+            $rodzaj3 = $rodzaj2->rodzaj_porcji;
+        }
+        switch($rodzaj3) {
+          case '1':return  "mg";
+              break;
+          case '2':return  "mililitry";
+              break;
+          case '3':return  "ilośći";
+              break;
+          default:return  "mg";
+              break;
+
+      }
+        
+        
+        
+    }
+    
+    private function zwroc_id_substancji($id_produktu) {
+        $id = DB::select("select id_substancji from przekierowanie_substancji where id_produktu = '$id_produktu'");
+        
+        
+    }
+    
+    public function ustal_poczatek_dnia($styl = false) {
+        $id_users = Auth::User()->id;
+        $poczatek = DB::select("select poczatek_dnia from users where id = '$id_users'");
+        foreach ($poczatek as $poczatek2) {
+            if ($styl == false) {
+                if (strlen($poczatek2->poczatek_dnia) == 1)
+                   return " 0" . $poczatek2->poczatek_dnia . ":00:00";
+               else 
+                   return " " . $poczatek2->poczatek_dnia . ":00:00";
+
+            }
+            else {
+              return $poczatek2->poczatek_dnia;
+
+
+            }
+        }
+      }
     public function oblicz_dzien($data,$bool = false) {
         
         if ($bool == false) {
@@ -129,7 +190,10 @@ class wpolsne extends BaseController
         
     }
     
-    
+    private function oblicz_rownowaznik($dawka,$rownowaznik_x,$rodzaj_diazepiny) {
+         return ($dawka / $rownowaznik_x) * $rodzaj_diazepiny;
+        
+    }
      public function oblicz_cene($liczba) {
     
       $liczba = round($liczba,2);
@@ -142,7 +206,6 @@ class wpolsne extends BaseController
       
 
 	$liczba2 = explode(".",$liczba);
-	//$liczba2 = substr($liczba2[1],0,2);
 	$liczba3 = strlen($liczba2[1]);
 	if ($liczba3 == 1) {
 	  $liczba2[1] .= "0";
@@ -162,8 +225,7 @@ class wpolsne extends BaseController
     
     public function oblicz_za_ile($dawka,$za_ile,$cena) {
         return ($dawka / $za_ile) * $cena;
-        
-        
+
     }
     
     public function wybierz_nazwe_substancji($id_produktu) {
@@ -183,40 +245,35 @@ class wpolsne extends BaseController
         return $nazwa3;
     }
   
-     public function ustal_poczatek_dnia($dzien = "") {
-      
-        if ($dzien == "") {
-           return " 00:00:00";
 
-        }
-        else {
-          return " $dzien:00:00";
-
-
-        }
-      
-    }
     
     
     public function wybierz_sume_substancji_dla_dnia($dzien,$id_users) {
-        $poczatek_dnia = $this->ustal_poczatek_dnia("05");
+        $poczatek_dnia = $this->ustal_poczatek_dnia();
         $data1 = $dzien . $poczatek_dnia;
         $dzien2 = explode("-",$dzien);
         $data2 = mktime("00","00","00",$dzien2[1],$dzien2[2],$dzien2[0]);
         $data2 += 86400;
         $data3 = date("Y-m-d",$data2) . $poczatek_dnia;
         
-        $substancje =  DB::select ("select sum(spozycie.porcja)  as porcja ,produkty.rodzaj_porcji as rodzaj,spozycie.id_produktu as nazwas,produkty.id  as id_produktu from spozycie  join produkty on spozycie.id_produktu = produkty.id "
+        $substancje =  DB::select ("select sum(spozycie.porcja)  as porcja ,produkty.rodzaj_porcji as rodzaj,spozycie.id_produktu as nazwas,"
+                . "produkty.id  as id_produktu,substancje.rownowaznik as rownowaznik from spozycie  join produkty on spozycie.id_produktu "
+                . "= produkty.id  left join przekierowanie_substancji on przekierowanie_substancji.id_produktu = produkty.id "
+                . "join substancje on substancje.id = przekierowanie_substancji.id_substancji "
                 . "where   data >= '$data1' and data <= '$data3' group by spozycie.id_produktu order by spozycie.id_produktu");
         $substancje3 = array();
         $i = 0;
         $alkohol = false;
+        $rownowaznik = 0;
         foreach ($substancje as $substancje2) {
             $wybierz_nazwe_produktu = DB::select("select nazwa from produkty where id = " . $substancje2->nazwas .  "");
             foreach ($wybierz_nazwe_produktu as $wybierz_nazwe_produktu2) {}
             $substancje3[$i]['nazwa'] = $wybierz_nazwe_produktu2->nazwa;
             $substancje3[$i]['porcja'] = $substancje2->porcja;
-
+            if ($substancje2->rownowaznik != "") {
+                $rownowaznik += $this->oblicz_rownowaznik($substancje2->porcja,$substancje2->rownowaznik,10);
+                
+            }
             switch ($substancje2->rodzaj) {
                case 1: 
                    $substancje3[$i]['rodzaj'] = "mg";
@@ -232,7 +289,7 @@ class wpolsne extends BaseController
                    $substancje3[$i]['rodzaj'] = "mg";
                    break;
             }
-      
+            
             $i++;
             
         }
@@ -242,7 +299,21 @@ class wpolsne extends BaseController
             $substancje3[$i]["porcja"] = $alkohol2;
             $substancje3[$i]["rodzaj"] = "mililitry";
         }
-        return $substancje3;
+        $this->suma_substancji = $substancje3;
+        $this->rownowaznik  = $rownowaznik;
+        
+        
+    }
+    
+    public function przelicz_rownowaznik($porcja,$id_benzo) {
+        $id_users = Auth::User()->id;
+        $wybierz_rownowaznik_benzo = DB::select("select rownowaznik from substancje where id_users = '$id_users' and id = '$id_benzo'");
+        foreach ($wybierz_rownowaznik_benzo as $wybierz_rownowaznik_benzo2) {
+            $dawka_koncowa = $this->oblicz_rownowaznik($porcja,10,$wybierz_rownowaznik_benzo2->rownowaznik);
+            return $dawka_koncowa;
+            
+        }
+        
         
     }
     private  function oblicz_ilosc_wypitego_alkoholu($porcja,$procent) {
@@ -256,7 +327,6 @@ class wpolsne extends BaseController
         foreach ($alkohol as $alkohol2) {
             $dawka = $this->oblicz_ilosc_wypitego_alkoholu($alkohol2->porcja,$alkohol2->ile_procent);
             $alkohol3 += $dawka;
-            print "dupka";
         }
         return $alkohol3;
     }

@@ -5,18 +5,34 @@
         <group>
             <file>file:/var/www/html/leki_2018_2/public/funkcje.js</file>
             <file>file:/var/www/html/leki_2018_2/.env</file>
-            <file>file:/var/www/html/leki_2018_2/resources/views/zaloguj.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/sukces.blade.php</file>
             <file>file:/var/www/html/leki_2018_2/routes/web.php</file>
-            <file>file:/var/www/html/leki_2018_2/resources/views/leki.blade.php</file>
-            <file>file:/var/www/html/leki_2018_2/public/style.css</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/modyfik_pro.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/app/Http/Controllers/Controller_szukaj.php</file>
+            <file>file:/var/www/html/leki_2018_2/routes/channels.php</file>
+            <file>file:/var/www/html/leki_2018_2/routes/console.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/wyszukaj.blade.php</file>
             <file>file:/var/www/html/leki_2018_2/resources/views/test.blade.php</file>
             <file>file:/var/www/html/leki_2018_2/app/Http/Controllers/Controller_ajax.php</file>
-            <file>file:/var/www/html/leki_2018_2/app/Http/Controllers/Controller.php</file>
             <file>file:/var/www/html/leki_2018_2/resources/views/ajax_blad.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/routes/api.php</file>
+            <file>file:/var/www/html/leki_2018_2/web.php</file>
             <file>file:/var/www/html/leki_2018_2/resources/views/layout/index.blade.php</file>
-            <file>file:/var/www/html/leki_2018_2/resources/views/ajax_pokaz_opis.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/modyfik_sub.blade.php</file>
             <file>file:/var/www/html/leki_2018_2/app/Http/Controllers/wpolsne.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/blad.blade.php</file>
             <file>file:/var/www/html/leki_2018_2/resources/views/ajax_sukces.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/modyfikuj.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/dodaj_nowy.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/zaloguj.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/public/index.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/leki.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/modyfik_grupe.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/public/style.css</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/hiperlacze.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/app/Http/Controllers/Controller.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/ajax_pokaz_opis.blade.php</file>
+            <file>file:/var/www/html/leki_2018_2/resources/views/rejestracja.blade.php</file>
             <file>file:/var/www/html/leki_2018_2/resources/views/glowna.blade.php</file>
         </group>
     </open-files>

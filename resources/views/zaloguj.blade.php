@@ -59,6 +59,12 @@
             </div>    
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </form>
+            <div class="row">
+                
+                <div align="center"><span class="blad">{{Session::get('login_error')}}</span></div>
+                <div align="center"><span class="succes3">{{Session::get('login_sukces')}}</span></div>
+                
+            </div>
         </div>
     </div>
   </div>
